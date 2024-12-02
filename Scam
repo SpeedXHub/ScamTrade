@@ -1,108 +1,135 @@
--- Create the ScreenGui
+-- GUI Script for JD Tools
 local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "DupeGui"
+local frame = Instance.new("Frame")
+local titleLabel = Instance.new("TextLabel")
+local onButton = Instance.new("TextButton")
+local offButton = Instance.new("TextButton")
+local background = Instance.new("Frame")
+local toggleButton = Instance.new("TextButton")  -- Blue toggle button to hide/show the GUI
+local tweenService = game:GetService("TweenService")
+
+-- Set up ScreenGui
+screenGui.Name = "JDTools"
 screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
--- Create the main frame with gray background and symmetrical edges
-local mainFrame = Instance.new("Frame")
-mainFrame.Size = UDim2.new(0, 400, 0, 100)
-mainFrame.Position = UDim2.new(0.5, -200, 0.5, -50)
-mainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 112) -- Neon Dark Blue
-mainFrame.Parent = screenGui
-mainFrame.BorderSizePixel = 0
+-- Set up Frame (Main Container)
+frame.Name = "MainFrame"
+frame.Size = UDim2.new(0, 200, 0, 110)
+frame.Position = UDim2.new(0, 5, 0, 120)
+frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+frame.BorderSizePixel = 0
+frame.Parent = screenGui
 
--- Add a neon stroke to the main frame
-local mainFrameStroke = Instance.new("UIStroke")
-mainFrameStroke.Thickness = 4
-mainFrameStroke.Color = Color3.fromRGB(0, 255, 255) -- Neon Cyan
-mainFrameStroke.Parent = mainFrame
+-- Set up Background Frame (for dragging)
+background.Name = "Background"
+background.Size = UDim2.new(1, 0, 1, 0)
+background.BackgroundColor3 = Color3.fromRGB(50, 50, 50)  -- Darker background color
+background.Parent = frame
 
--- Create the title label "JD SCRIPTS"
-local titleLabel = Instance.new("TextLabel")
-titleLabel.Size = UDim2.new(1, 0, 0, 30)
+-- Add Title Label
+titleLabel.Name = "TitleLabel"
+titleLabel.Size = UDim2.new(1, 0, 0.3, 0)
 titleLabel.Position = UDim2.new(0, 0, 0, 0)
-titleLabel.Text = "JD SCRIPTS"
-titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- White
-titleLabel.TextStrokeTransparency = 0.5
-titleLabel.TextSize = 18
-titleLabel.BackgroundTransparency = 1
-titleLabel.Parent = mainFrame
+titleLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.Text = "JD TOOLS - V3\nULTIMATE TRADE SCAM"
+titleLabel.TextScaled = true
+titleLabel.Font = Enum.Font.GothamBold
+titleLabel.Parent = background
 
--- Create the "Dupe" button (left side)
-local dupeButton = Instance.new("TextButton")
-dupeButton.Size = UDim2.new(0, 150, 0, 40)
-dupeButton.Position = UDim2.new(0, 10, 0.5, -20)
-dupeButton.Text = "Dupe"
-dupeButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-dupeButton.BackgroundColor3 = Color3.fromRGB(173, 255, 47) -- Neon Green
-dupeButton.TextSize = 20
-dupeButton.BorderSizePixel = 0
-dupeButton.Parent = mainFrame
+-- Set up ON Button (Gray color)
+onButton.Name = "OnButton"
+onButton.Size = UDim2.new(0.3, 0, 0.3, 0)
+onButton.Position = UDim2.new(0.1, 0, 0.6, 0)  -- Position adjusted for symmetry
+onButton.Text = "ON"
+onButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)  -- Gray color for ON
+onButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+onButton.Font = Enum.Font.GothamBold
+onButton.TextScaled = true
+onButton.Parent = frame
 
--- Add a neon stroke to the Dupe button
-local dupeButtonStroke = Instance.new("UIStroke")
-dupeButtonStroke.Thickness = 2
-dupeButtonStroke.Color = Color3.fromRGB(0, 255, 255) -- Neon Cyan
-dupeButtonStroke.Parent = dupeButton
+-- Set up OFF Button (Gray color)
+offButton.Name = "OffButton"
+offButton.Size = UDim2.new(0.3, 0, 0.3, 0)
+offButton.Position = UDim2.new(0.6, 0, 0.6, 0)  -- Position adjusted for symmetry
+offButton.Text = "OFF"
+offButton.BackgroundColor3 = Color3.fromRGB(255,0 , 0)  -- Gray color for OFF
+offButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+offButton.Font = Enum.Font.GothamBold
+offButton.TextScaled = true
+offButton.Parent = frame
 
--- Create the "Off" button (right side)
-local offButton = Instance.new("TextButton")
-offButton.Size = UDim2.new(0, 150, 0, 40)
-offButton.Position = UDim2.new(1, -160, 0.5, -20)
-offButton.Text = "Off"
-offButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-offButton.BackgroundColor3 = Color3.fromRGB(255, 69, 0) -- Neon Red-Orange
-offButton.TextSize = 20
-offButton.BorderSizePixel = 0
-offButton.Parent = mainFrame
-
--- Add a neon stroke to the Off button
-local offButtonStroke = Instance.new("UIStroke")
-offButtonStroke.Thickness = 2
-offButtonStroke.Color = Color3.fromRGB(255, 20, 147) -- Neon Pink
-offButtonStroke.Parent = offButton
-
--- Toggle function for Dupe and Off buttons
-local isDupeOn = false
-
-dupeButton.MouseButton1Click:Connect(function()
-    if not isDupeOn then
-        isDupeOn = true
-        dupeButton.Text = "Dupe ON"
-        offButton.Text = "Off"
-        -- Add your Dupe functionality here
-        print("Dupe is ON!")
-    end
-end)
-
-offButton.MouseButton1Click:Connect(function()
-    if isDupeOn then
-        isDupeOn = false
-        offButton.Text = "Off ON"
-        dupeButton.Text = "Dupe"
-        -- Add your Off functionality here
-        print("Dupe is OFF!")
-    end
-end)
-
--- Create the "Toggle" button outside the main GUI (left mid position)
-local toggleButton = Instance.new("TextButton")
-toggleButton.Size = UDim2.new(0, 100, 0, 40)
-toggleButton.Position = UDim2.new(0, 10, 0.5, -20) -- Adjust this to left middle
+-- Create Blue Toggle Button with adjusted position (Top-left)
+toggleButton.Name = "ToggleButton"
+toggleButton.Size = UDim2.new(0.1, 0, 0.1, 0)  -- Square shape (equal width and height)
+toggleButton.Position = UDim2.new(0, 7, 0, 1)  -- Top-left corner with a little margin
 toggleButton.Text = "Toggle"
-toggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-toggleButton.BackgroundColor3 = Color3.fromRGB(135, 206, 250) -- Neon Sky Blue
-toggleButton.TextSize = 20
-toggleButton.BorderSizePixel = 0
+toggleButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)  -- Blue color
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleButton.Font = Enum.Font.GothamBold
+toggleButton.TextScaled = true
 toggleButton.Parent = screenGui
 
--- Add a neon stroke to the Toggle button
-local toggleButtonStroke = Instance.new("UIStroke")
-toggleButtonStroke.Thickness = 2
-toggleButtonStroke.Color = Color3.fromRGB(0, 255, 255) -- Neon Cyan
-toggleButtonStroke.Parent = toggleButton
+-- Variable to track button state
+local isOn = false
 
--- Toggle visibility of the main GUI
+-- ON Button Functionality
+onButton.MouseButton1Click:Connect(function()
+    if not isOn then
+        onButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+        offButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+        print("ON button clicked")
+        isOn = true
+    end
+end)
+
+-- OFF Button Functionality
+offButton.MouseButton1Click:Connect(function()
+    if isOn then
+        offButton.BackgroundColor3 = Color3.fromRGB(255, 0 , 0)
+        onButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+        print("OFF button clicked")
+        isOn = false
+    end
+end)
+
+-- Dragging functionality for moving the entire frame
+local dragging = false
+local dragStart = nil
+local startPos = nil
+
+-- Function to start dragging when clicking on the title label
+titleLabel.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = frame.Position
+    end
+end)
+
+-- Function to stop dragging when releasing the mouse button
+titleLabel.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = false
+    end
+end)
+
+-- Function to update frame position while dragging
+game:GetService("UserInputService").InputChanged:Connect(function(input)
+    if dragging then
+        local delta = input.Position - dragStart
+        frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+-- Toggle Button Functionality: Show/Hide the GUI
+local guiVisible = true  -- Track the visibility state
+
 toggleButton.MouseButton1Click:Connect(function()
-    mainFrame.Visible = not mainFrame.Visible
+    if guiVisible then
+        frame.Visible = false  -- Hide the frame
+    else
+        frame.Visible = true   -- Show the frame
+    end
+    guiVisible = not guiVisible  -- Toggle the state
 end)
